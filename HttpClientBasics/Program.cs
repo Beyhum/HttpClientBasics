@@ -19,7 +19,8 @@ namespace HttpClientBasics
         static async Task RunApp(App appInstance)
         {
             // create a list of methods which return Tasks, and add all the methods that we'd like to call from our App instance
-            var commandList = new List<Func<Task>> { appInstance.GetValue, appInstance.GetValues, appInstance.PostValue };
+            var commandList = new List<Func<Task>> {appInstance.Authenticator.Authorize, appInstance.Authenticator.Register,
+                appInstance.GetValue, appInstance.GetValues, appInstance.PostValue };
 
             while (true)
             {

@@ -16,11 +16,16 @@ namespace HttpClientBasics
         // CustomClient is our custom HttpClient
         private CustomClient client;
 
+        public Authenticator Authenticator { get; }
+
         public App()
         {
             // setup our http client when our "App" is created
             // we're using the singleton pattern to always retrieve the same http client
             client = CustomClient.Instance;
+
+            // our Authenticator class will be in charge of registration and authentication
+            Authenticator = new Authenticator();
         }
 
         public async Task GetPage()
@@ -152,5 +157,8 @@ namespace HttpClientBasics
                 Console.WriteLine(response.StatusCode);
             }
         }
+
+
+        
     }
 }
