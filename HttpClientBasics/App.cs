@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HttpClientBasics.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -52,9 +54,22 @@ namespace HttpClientBasics
             var response = await client.GetAsync("api/Values/" + valueID);
             if (response.IsSuccessStatusCode)
             {
+                // we're currently retrieving our data as a JSON string, but what if we want to manipulate this data on our client?
+                // we need to deserialize our JSON: create a class (Value) which will represent our data on the client,
+                // then map each parameter in our JSON to a field of that class
                 string responseString = await response.Content.ReadAsStringAsync();
 
-                Console.WriteLine(responseString);
+                // instead of manually mapping each param in our string to a field of our Value class, we will use a popular library: Newtonsoft.Json
+                // to add the package, go to Package Manager Console and type: Install-Package Newtonsoft.Json
+                // or right click on your project, go to "Manage Nuget Packages", go to "Browse" and look for "Newtonsoft.Json"
+
+                // We use the JsonConvert class to deserialize a string by mentioning the type we want to deserialize to in the generic parameter
+                // the DeserializeObject returns a value of the generic type
+                Value deserializedValue = JsonConvert.DeserializeObject<Value>(responseString);
+
+                // now we can manipulate our data as an object in C#
+                Console.WriteLine("This value's ID is " + deserializedValue.id);
+                Console.WriteLine("This value's data is " + deserializedValue.data);
             }
             else
             {
