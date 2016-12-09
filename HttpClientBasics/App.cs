@@ -25,8 +25,8 @@ namespace HttpClientBasics
 
         public async Task GetPage()
         {
-            
-            
+
+
             // GetAsync makes a GET request to the mentioned url, and returns a response (HttpResponseMessage)
             // The response contains information relevant to our request (its status code, the returned data, ...)
             var response = await client.GetAsync("http://stackoverflow.com");
@@ -89,16 +89,13 @@ namespace HttpClientBasics
                 // our server specifies that it takes a JSON string of the form {"data": 0}
                 // we need to create a class (ValuePost) which represents our value to post, and serialize it into a JSON string
                 ValuePost valueToPost = new ValuePost(valueData);
-                string valueAsString = JsonConvert.SerializeObject(valueToPost);
 
-                // when using PostAsync, we specify the resource's URL and the request body.
-                // Our request body has to be a StringContent because we need to specify the encoding and content type of our request
-                // so that our server can properly parse and interpret the data we're sending
-                var response = await client.PostAsync("api/Values", new StringContent(valueAsString, Encoding.UTF8, "application/JSON"));
+                // instead of calling the StringContent constructor for each Post request, make a helper method in CustomClient
+                var response = await client.PostAsync("api/Values", CustomClient.JsonContent(valueToPost));
 
                 if (response.IsSuccessStatusCode)
                 {
-                    
+
                     string responseString = await response.Content.ReadAsStringAsync();
 
                     // the server's response body will contain our newly created Value, with the ID that it assigned to it
@@ -112,12 +109,18 @@ namespace HttpClientBasics
                     Console.WriteLine(response.StatusCode);
                 }
             }
+            catch (OverflowException)
+            {
+                Console.WriteLine("The data you entered is invalid. It must be an integer");
+                return;
+            }
             catch (FormatException)
             {
                 Console.WriteLine("The data you entered is invalid. It must be an integer");
                 return;
             }
             
+
         }
 
 

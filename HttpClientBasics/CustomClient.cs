@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -37,6 +38,19 @@ namespace HttpClientBasics
             {
                 return client;
             }
+        }
+
+        // helper method to easily create a StringContent object when making POST requests
+        public static StringContent JsonContent(object objectToParse)
+        {
+
+            string objectAsString = JsonConvert.SerializeObject(objectToParse);
+
+            StringContent content =
+                new StringContent(objectAsString, Encoding.UTF8, "application/json");
+
+            return content;
+
         }
 
     }
