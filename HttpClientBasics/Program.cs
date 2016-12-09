@@ -11,7 +11,7 @@ namespace HttpClientBasics
         static void Main(string[] args)
         {
             App appInstance = new App();
-            appInstance.GetValues().Wait();
+            appInstance.PostValue().Wait();
             Console.ReadKey();
 
         }

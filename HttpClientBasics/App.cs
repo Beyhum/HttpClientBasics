@@ -77,6 +77,50 @@ namespace HttpClientBasics
             }
         }
 
+        public async Task PostValue()
+        {
+            Console.WriteLine("Enter the data of the value you want to post: ");
+            try
+            {
+                int valueData = Int32.Parse(Console.ReadLine());
+                // to post a value to the server, we need to use a POST Http Method 
+                //and include a JSON object in our request body (which represents what we want to send to the server)
+
+                // our server specifies that it takes a JSON string of the form {"data": 0}
+                // we need to create a class (ValuePost) which represents our value to post, and serialize it into a JSON string
+                ValuePost valueToPost = new ValuePost(valueData);
+                string valueAsString = JsonConvert.SerializeObject(valueToPost);
+
+                // when using PostAsync, we specify the resource's URL and the request body.
+                // Our request body has to be a StringContent because we need to specify the encoding and content type of our request
+                // so that our server can properly parse and interpret the data we're sending
+                var response = await client.PostAsync("api/Values", new StringContent(valueAsString, Encoding.UTF8, "application/JSON"));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    
+                    string responseString = await response.Content.ReadAsStringAsync();
+
+                    // the server's response body will contain our newly created Value, with the ID that it assigned to it
+                    Value deserializedValue = JsonConvert.DeserializeObject<Value>(responseString);
+
+                    Console.WriteLine("This value's ID is " + deserializedValue.id);
+                    Console.WriteLine("This value's data is " + deserializedValue.data);
+                }
+                else
+                {
+                    Console.WriteLine(response.StatusCode);
+                }
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("The data you entered is invalid. It must be an integer");
+                return;
+            }
+            
+        }
+
+
         public async Task GetValues()
         {
             // since we set the BaseAddress of our Custom http client to http://w2backend.azurewebsites.net , we don't have to mention the 
