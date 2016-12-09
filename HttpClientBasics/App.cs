@@ -23,6 +23,8 @@ namespace HttpClientBasics
 
         public async Task GetPage()
         {
+            
+            
             // GetAsync makes a GET request to the mentioned url, and returns a response (HttpResponseMessage)
             // The response contains information relevant to our request (its status code, the returned data, ...)
             var response = await client.GetAsync("http://stackoverflow.com");
@@ -39,6 +41,24 @@ namespace HttpClientBasics
             }
 
 
+        }
+
+        public async Task GetValue()
+        {
+            // since we set the BaseAddress of our Custom http client to http://w2backend.azurewebsites.net , we don't have to mention the 
+            // base address for every request we make through the client. Calling GetAsync("api/Values") is equivalent to GetAsync("http://w2backend.azurewebsites.net/api/Values")
+            var response = await client.GetAsync("api/Values");
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseString = await response.Content.ReadAsStringAsync();
+
+                // print our response string which is formatted as JSON
+                Console.WriteLine(responseString);
+            }else
+            {
+                Console.WriteLine(response.StatusCode);
+            }
         }
     }
 }

@@ -24,8 +24,8 @@ namespace HttpClientBasics
         {
 
             // set the base address for all requests that will be made with this client
-            //all of our requests will start with "http://stackoverflow.com"
-            BaseAddress = new Uri("http://stackoverflow.com");
+            //all of our requests will start with "http://w2backend.azurewebsites.net"
+            BaseAddress = new Uri("http://w2backend.azurewebsites.net");
 
         }
 
