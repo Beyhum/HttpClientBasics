@@ -87,9 +87,20 @@ namespace HttpClientBasics
             {
                 string responseString = await response.Content.ReadAsStringAsync();
 
-                // print our response string which is formatted as JSON
-                Console.WriteLine(responseString);
-            }else
+                // api/Values returns a list of values, so we can give List<Value> as a generic type to our DeserializeObject method,
+                // and it will return a List of values
+                List<Value> deserializedList = JsonConvert.DeserializeObject<List<Value>>(responseString);
+
+                // now we can manipulate our list of values as an object in C#
+                var filteredList = deserializedList.Where(v => v.data > 50).ToList();
+
+                foreach (var value in filteredList)
+                {
+                    // we filtered through our list to retrieve all values with data larger than 50
+                    Console.WriteLine($"id: {value.id} | data: {value.data}");
+                }
+            }
+            else
             {
                 Console.WriteLine(response.StatusCode);
             }
