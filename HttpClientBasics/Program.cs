@@ -11,10 +11,11 @@ namespace HttpClientBasics
         static void Main(string[] args)
         {
             App appInstance = new App();
-
             appInstance.GetPage().Wait();
-
             Console.ReadKey();
+
         }
+
     }
+    
 }

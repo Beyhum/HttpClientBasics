@@ -11,12 +11,14 @@ namespace HttpClientBasics
     class App
     {
 
-        private HttpClient client;
+        // CustomClient is our custom HttpClient
+        private CustomClient client;
 
         public App()
         {
-            // setup our HttpClient when our "App" is created
-            client = new HttpClient();
+            // setup our http client when our "App" is created
+            // we're using the singleton pattern to always retrieve the same http client
+            client = CustomClient.Instance;
         }
 
         public async Task GetPage()
