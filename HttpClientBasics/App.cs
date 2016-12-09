@@ -43,7 +43,26 @@ namespace HttpClientBasics
 
         }
 
+
         public async Task GetValue()
+        {
+            Console.WriteLine("Enter the ID of the value you want to retrieve: ");
+            string valueID = Console.ReadLine();
+
+            var response = await client.GetAsync("api/Values/" + valueID);
+            if (response.IsSuccessStatusCode)
+            {
+                string responseString = await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine(responseString);
+            }
+            else
+            {
+                Console.WriteLine(response.StatusCode);
+            }
+        }
+
+        public async Task GetValues()
         {
             // since we set the BaseAddress of our Custom http client to http://w2backend.azurewebsites.net , we don't have to mention the 
             // base address for every request we make through the client. Calling GetAsync("api/Values") is equivalent to GetAsync("http://w2backend.azurewebsites.net/api/Values")
