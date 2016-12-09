@@ -51,6 +51,7 @@
     <Compile Include="Authenticator.cs" />
     <Compile Include="CustomClient.cs" />
     <Compile Include="Models\RegisterDto.cs" />
+    <Compile Include="Models\SecretPost.cs" />
     <Compile Include="Models\Token.cs" />
     <Compile Include="Models\Value.cs" />
     <Compile Include="Models\ValuePost.cs" />

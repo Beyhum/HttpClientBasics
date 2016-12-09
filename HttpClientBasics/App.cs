@@ -158,7 +158,41 @@ namespace HttpClientBasics
             }
         }
 
+        public async Task PostSecret()
+        {
+            Console.WriteLine("Enter the message you want to post: ");
+            string messageSecret = Console.ReadLine();
 
-        
+            SecretPost secretToPost = new SecretPost(messageSecret);
+
+            // Serialize our Secret object to JSON, as our server specifies that it requires a JSON string
+            var response = await client.PostAsync("api/Secrets", CustomClient.JsonContent(secretToPost));
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Successfully posted secret!");
+            }else
+            {
+                Console.WriteLine(response.StatusCode);
+            }
+        }
+
+        public async Task GetSecrets()
+        {
+            // the secrets resource is protected and requires an access token
+            // accessing it without an authorization header will result in a 401 Unauthorized error
+            var response = await client.GetAsync("api/Secrets");
+
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(content);
+            }
+            else
+            {
+                Console.WriteLine(response.StatusCode);
+
+            }
+
+        }
     }
 }
